@@ -1,0 +1,14 @@
+<h1>Welcome, <%= current_user.phone_number if user_signed_in? %></h1>
+
+<% if user_signed_in? %>
+  <p>
+    <%= link_to "Profile", profile_path %>  <!-- Link to your profile section -->
+  </p>
+  <p>
+    <%= link_to "Logout", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure you want to sign out?" } %>
+  </p>
+<% else %>
+  <p>
+    <%= link_to "Login", new_user_session_path %>
+  </p>
+<% end %>

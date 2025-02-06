@@ -1,0 +1,12 @@
+<h1>Profile</h1>
+
+<p><strong>Handle:</strong> <%= current_user.handle %></p>
+<p><strong>Phone Number:</strong> <%= current_user.phone_number %></p>
+
+<p>
+  <%= link_to "Edit Profile", edit_profile_path, class: "btn btn-primary" %>
+</p>
+
+<!-- Delete Account Section -->
+<%= button_to "Delete Account", confirm_delete_profile_path, method: :get, class: "danger-button" %>
+

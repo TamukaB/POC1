@@ -1,0 +1,22 @@
+<h1>Confirm Account Deletion</h1>
+
+<p><strong>Warning:</strong> Deleting your account is permanent and cannot be undone.</p>
+<p>This action will:</p>
+<ul>
+  <li>Remove all your data from our system.</li>
+  <li>Log you out of all devices.</li>
+  <li>Require you to register again if you wish to use the service in the future.</li>
+</ul>
+<p>To proceed, please enter your GUID:</p>
+
+<%= form_with url: profile_path, method: :delete do %>
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  
+  <label for="guid">Enter Your GUID:</label>
+  <%= text_field_tag :guid, nil, required: true, placeholder: "Enter your GUID" %>
+
+  <br><br>
+  
+  <%= link_to "Cancel", profile_path, class: "btn btn-secondary" %>
+  <%= submit_tag "Confirm & Delete Account", data: { confirm: "Are you sure you want to permanently delete your account?" }, class: "btn btn-danger" %>
+<% end %>

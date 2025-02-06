@@ -1,0 +1,12 @@
+<h2>Enter OTP</h2>
+
+<p>An OTP has been sent to your registered phone number. Please enter it below:</p>
+
+<%= form_with url: "/mfa/verify_otp", method: :post do %>
+  <input type="hidden" name="phone_number" value="<%= @phone_number %>">
+  <div>
+    <label for="otp">OTP:</label>
+    <input type="text" name="otp" required>
+  </div>
+  <button type="submit">Verify OTP</button>
+<% end %>

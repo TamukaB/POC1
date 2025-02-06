@@ -1,0 +1,12 @@
+<h2>Verify Your Device</h2>
+
+<p>Please enter your GUID (unique handle) to verify your identity. An OTP will then be sent to your associated phone number.</p>
+
+<%= form_with url: "/mfa/verify_guid", method: :post do %>
+  <input type="hidden" name="phone_number" value="<%= @phone_number %>">
+  <div>
+    <label for="guid">Enter your GUID:</label>
+    <input type="text" name="guid" required>
+  </div>
+  <button type="submit">Verify GUID & Send OTP</button>
+<% end %>

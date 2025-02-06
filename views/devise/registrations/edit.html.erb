@@ -1,0 +1,40 @@
+<h2>Edit Your Account</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <% if resource.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(resource.errors.count, "error") %> prohibited this account from being saved:</h2>
+      <ul>
+      <% resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="field">
+    <%= f.label :phone_number, "Phone Number" %><br />
+    <%= f.text_field :phone_number, readonly: true %>
+    <%# Alternatively, you may allow phone number updates if needed %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :handle, "Your Unique Handle (GUID)" %><br />
+    <%= f.text_field :handle, required: true %>
+  </div>
+  
+  <%# If you require confirmation of current password, leave these fields in %>
+  <div class="field">
+    <%= f.label :current_password, "Current Password" %> <i>(we need your current password to confirm your changes)</i><br />
+    <%= f.password_field :current_password, autocomplete: "off" %>
+  </div>
+  
+  <div class="actions">
+    <%= f.submit "Update" %>
+  </div>
+<% end %>
+
+<h3>Cancel my account</h3>
+<p><%= link_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+
+<%= link_to "Back", :back %>

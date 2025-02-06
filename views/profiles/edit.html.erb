@@ -1,0 +1,28 @@
+<h1>Edit Profile</h1>
+
+<%= form_for(current_user, url: profile_path, html: { method: :put }) do |f| %>
+  <% if current_user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(current_user.errors.count, "error") %> prohibited this profile from being saved:</h2>
+      <ul>
+        <% current_user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :phone_number, "Phone Number" %><br>
+    <%= f.text_field :phone_number, readonly: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :handle, "GUID (Unique Handle)" %><br>
+    <%= f.text_field :handle, required: true %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Update Profile" %>
+  </div>
+<% end %>
