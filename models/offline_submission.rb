@@ -1,0 +1,2 @@
+class OfflineSubmission < ApplicationRecord
+end

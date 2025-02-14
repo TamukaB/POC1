@@ -1,10 +1,120 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+body {
+  background: #f4f6f9;
+  font-family: 'Arial', sans-serif;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+p {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.d-grid {
+  width: 100%
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  border-radius: 6px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  margin-top: 15px;
+  border: none;
+  font-size: 18px;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  transition: background 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.alert {
+  background: #ffcccc;
+  color: #d9534f;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.text-decoration-none {
+  color: #007bff;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.text-decoration-none:hover {
+  text-decoration: underline;
+}
+
+.signup-button {
+  margin-top: 20px
+}
+
+.d-grid.gap-3 {
+  margin-top: 20px;
+}
+
+
+.delete-warning-list {
+  list-style-type: none; 
+  padding-left: 0; 
+  text-align: left; 
+}
+
+.delete-warning-list li {
+  position: relative;
+  padding-left: 25px; 
+  margin-bottom: 10px; 
+}
+
+.delete-warning-list li::before {
+  content: "•"; 
+  position: absolute;
+  left: 0;
+  font-size: 18px;
+  color: #dc3545; 
+  font-weight: bold;
+}

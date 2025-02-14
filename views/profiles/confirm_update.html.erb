@@ -1,11 +1,20 @@
-<h1>Confirm GUID Update</h1>
+<div class="container">
+  <div class="card shadow-lg rounded-lg">
+    <div class="card-body">
+      <h2 class="text-center mb-4">Confirm GUID Update</h2>
 
-<p>An OTP has been sent to your phone. Please enter the OTP below to confirm updating your GUID.</p>
+      <p class="text-center">An OTP has been sent to your phone. Please enter the OTP below to confirm updating your GUID.</p>
 
-<%= form_with url: confirm_update_profile_path, method: :post do %>
-  <div>
-    <label for="otp">Enter OTP:</label>
-    <input type="text" name="otp" required>
+      <%= form_with url: confirm_update_profile_path, method: :post, class: "needs-validation" do %>
+        <div class="mb-3">
+          <label for="otp" class="form-label">Enter OTP:</label>
+          <input type="text" name="otp" class="form-control" required placeholder="Enter your OTP">
+        </div>
+
+        <div class="d-grid gap-2 mt-3">
+          <button type="submit" class="btn btn-primary btn-lg">Confirm Update</button>
+        </div>
+      <% end %>
+    </div>
   </div>
-  <button type="submit">Confirm Update</button>
-<% end %>
+</div>
