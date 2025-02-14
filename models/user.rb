@@ -1,7 +1,9 @@
 class User < ApplicationRecord
   has_many :devices, dependent: :destroy
   devise :registerable, :database_authenticatable, :validatable
-  after_create :replicate_database
+  
+  after_commit :replicate_database, on: :create  # ✅ Ensures replication happens after full save
+  after_destroy :delete_replicated_db  
   before_update :mark_as_unsynced_if_offline
   
   validates :phone_number, presence: true, uniqueness: true
@@ -21,31 +23,52 @@ class User < ApplicationRecord
     end
   end
 
-def replicate_database
-  original_db_path = Rails.root.join("storage", "#{Rails.env}.sqlite3")
+  def replicate_database
+    return unless persisted?  # ✅ Ensure user is fully saved before replication
 
-  unless File.exist?(original_db_path)
-    Rails.logger.error "Original DB not found at #{original_db_path} for user #{self.id}"
-    return false
+    original_db_path = Rails.root.join("storage", "#{Rails.env}.sqlite3")
+
+    unless File.exist?(original_db_path)
+      Rails.logger.error "❌ Original DB not found at #{original_db_path} for user #{id}"
+      return false
+    end 
+
+    destination_dir = "/var/www/POC1/replicated_dbs/#{handle}"
+    FileUtils.mkdir_p(destination_dir) unless Dir.exist?(destination_dir)
+
+    destination_db_path = File.join(destination_dir, "database.sqlite3")
+
+    begin
+      FileUtils.cp(original_db_path, destination_db_path)
+      Rails.logger.info "✅ Database replicated for user #{id} (GUID: #{handle})"
+
+      update_column(:replicated_db_path, destination_db_path)  
+
+      return true
+    rescue StandardError => e
+      Rails.logger.error "❌ Failed to replicate DB for user #{id}: #{e.message}"
+      return false
+    end 
   end 
 
-  destination_dir = "/var/www/POC1/replicated_dbs/#{self.handle}"
-  FileUtils.mkdir_p(destination_dir) unless Dir.exist?(destination_dir)
+  def delete_replicated_db
+    Rails.logger.info "🛑 Attempting to delete replicated DB for user #{id} (#{handle})..."
 
-  destination_db_path = File.join(destination_dir, "database.sqlite3")
+    if replicated_db_path.present? && File.exist?(replicated_db_path)
+      File.delete(replicated_db_path)
+      Rails.logger.info "✅ Deleted replicated database for user #{id} at #{replicated_db_path}"
+    else
+      Rails.logger.warn "⚠️ Replicated database file not found for user #{id}, skipping deletion."
+    end
 
-  begin
-    FileUtils.cp(original_db_path, destination_db_path)
-    Rails.logger.info "Database replicated for user #{self.id} (GUID: #{self.handle})"
-
-    self.update(replicated_db_path: destination_db_path)
-
-    return true
-  rescue StandardError => e
-    Rails.logger.error "Failed to replicate DB for user #{self.id}: #{e.message}"
-    return false
-  end 
-end 
+    user_directory = File.dirname(replicated_db_path) rescue nil
+    if user_directory && Dir.exist?(user_directory) && Dir.empty?(user_directory)
+      Dir.rmdir(user_directory)
+      Rails.logger.info "✅ Deleted empty user directory: #{user_directory}"
+    else
+      Rails.logger.warn "⚠️ User directory not empty or doesn't exist: #{user_directory}"
+    end
+  end
 
   private
 
@@ -60,4 +83,3 @@ end
     Time.current - last_synced_at > 24.hours
   end
 end
-

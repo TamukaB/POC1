@@ -1,12 +1,23 @@
-<h2>Enter OTP</h2>
+<div class="container">
+  <div class="card shadow-lg rounded-lg">
+    <div class="card-body">
+      <h2 class="text-center mb-4">Enter OTP</h2>
+      
+      <p class="text-center description-text">
+        An OTP has been sent to your registered phone number. Please enter it below to proceed.
+      </p>
 
-<p>An OTP has been sent to your registered phone number. Please enter it below:</p>
+      <%= form_with url: "/mfa/verify_otp", method: :post, html: { class: "needs-validation" } do %>
+        <input type="hidden" name="phone_number" value="<%= @phone_number %>">
 
-<%= form_with url: "/mfa/verify_otp", method: :post do %>
-  <input type="hidden" name="phone_number" value="<%= @phone_number %>">
-  <div>
-    <label for="otp">OTP:</label>
-    <input type="text" name="otp" required>
+        <div class="mb-3">
+          <%= text_field_tag :otp, nil, required: true, placeholder: "Enter your OTP", class: "form-control" %>
+        </div>
+
+        <div class="d-grid gap-2 mt-3">
+          <%= submit_tag "Verify OTP", class: "btn btn-primary btn-lg" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-  <button type="submit">Verify OTP</button>
-<% end %>
+</div>

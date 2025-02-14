@@ -1,12 +1,24 @@
-<h2>Verify Your Device</h2>
+<div class="container">
+  <div class="card shadow-lg rounded-lg">
+    <div class="card-body">
+      <h2 class="text-center mb-4">Verify Your Device</h2>
+      
+      <p class="text-center description-text">
+        Please enter your GUID (unique handle) to verify your identity. An OTP will then be sent to your associated phone number.
+      </p>
 
-<p>Please enter your GUID (unique handle) to verify your identity. An OTP will then be sent to your associated phone number.</p>
+      <%= form_with url: "/mfa/verify_guid", method: :post, html: { class: "needs-validation" } do %>
+        <input type="hidden" name="phone_number" value="<%= @phone_number %>">
 
-<%= form_with url: "/mfa/verify_guid", method: :post do %>
-  <input type="hidden" name="phone_number" value="<%= @phone_number %>">
-  <div>
-    <label for="guid">Enter your GUID:</label>
-    <input type="text" name="guid" required>
+        <div class="mb-3">
+          <%= label_tag :guid, "Enter your GUID:", class: "form-label" %>
+          <%= text_field_tag :guid, nil, required: true, placeholder: "Enter your GUID", class: "form-control" %>
+        </div>
+
+        <div class="d-grid gap-2 mt-3">
+          <%= submit_tag "Verify GUID & Send OTP", class: "btn btn-primary btn-lg" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-  <button type="submit">Verify GUID & Send OTP</button>
-<% end %>
+</div>

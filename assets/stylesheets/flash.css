@@ -1,0 +1,32 @@
+/* Flash Messages */
+.flash-messages {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    z-index: 1000;
+  }
+  
+  .flash-message {
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+  }
+  
+  .flash-message.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+  }
+  
+  .alert-success { background-color: #09bb00; color: white; }
+  .alert-danger { background-color: #dc3545; color: white; }
+  .alert-warning { background-color: #ffc107; color: black; }
+  .alert-info { background-color: #17a2b8; color: white; }
+  

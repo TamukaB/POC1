@@ -139,6 +139,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    // 🔹 Fix: Ensure Flash Messages Fade Out
+    setTimeout(() => {
+        document.querySelectorAll(".flash-message").forEach((message) => {
+            message.style.transition = "opacity 1s ease-out";
+            message.style.opacity = "0";
+            setTimeout(() => {
+                message.remove();
+            }, 1000);
+        });
+    }, 5000); // 5-second delay before fading out
 });
 
 function sendToServer(data) {
