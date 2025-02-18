@@ -20,6 +20,16 @@ body {
   text-align: center;
 }
 
+.card-body {
+  position: relative; /* Ensures absolute positioning of elements within it */
+}
+
+.position-absolute {
+  position: absolute;
+  top: -25px;
+  right: 10px;
+}
+
 p {
   font-size: 18px;
   color: #333;
@@ -96,7 +106,6 @@ p {
 .d-grid.gap-3 {
   margin-top: 20px;
 }
-
 
 .delete-warning-list {
   list-style-type: none; 

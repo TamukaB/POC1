@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_many :devices, dependent: :destroy
   devise :registerable, :database_authenticatable, :validatable
   
-  after_commit :replicate_database, on: :create  # ✅ Ensures replication happens after full save
+  after_commit :replicate_database, on: :create  
   after_destroy :delete_replicated_db  
   before_update :mark_as_unsynced_if_offline
   
@@ -24,7 +24,7 @@ class User < ApplicationRecord
   end
 
   def replicate_database
-    return unless persisted?  # ✅ Ensure user is fully saved before replication
+    return unless persisted?  
 
     original_db_path = Rails.root.join("storage", "#{Rails.env}.sqlite3")
 
@@ -68,6 +68,14 @@ class User < ApplicationRecord
     else
       Rails.logger.warn "⚠️ User directory not empty or doesn't exist: #{user_directory}"
     end
+  end
+
+  def update_session_state(state)
+    update(session_state: state.to_json)
+  end
+
+  def get_session_state
+    JSON.parse(session_state || "{}")
   end
 
   private

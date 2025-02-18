@@ -1,0 +1,11 @@
+<div class="container my-5">
+  <div class="card p-4 shadow">
+    <h1 class="text-center">Welcome, <%= current_user.handle %>!</h1>
+    <p class="text-center mt-3">Select the page you wish to navigate to:</p>
+    <div class="d-flex justify-content-center flex-wrap mt-5 gap-3">
+      <%= link_to "Profile", profile_path, class: "btn btn-primary btn-lg" %>
+      <%= link_to "Edit Profile", edit_profile_path, class: "btn btn-secondary btn-lg" %>
+      <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger btn-lg", data: { confirm: "Are you sure you want to sign out?" } %>
+    </div>
+  </div>
+</div>

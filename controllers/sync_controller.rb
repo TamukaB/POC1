@@ -1,22 +1,15 @@
 class SyncController < ApplicationController
-    skip_before_action :verify_authenticity_token
+    before_action :authenticate_user!
 
-    def sync_data
-        data = params[:data]
-    data.each do |item|
-        user = User.find_by(handle: item[:"handle"])
-
-        if user 
-            user.update(sync_data_params(item))
-        end
-    end
-
-private 
-
-def sync_data_params(item) 
-{
-synced: true,
-last_synced_at: Time.current,
-}
+def session_data
+    render json: { session_state: current_user.get_session_state }
 end 
+
+def update_session_state
+    if current_user.update(session_state: params[:session_state])
+        render json: { status: 'success' }
+    else
+        render json: { status: 'error', errors: current_user.errors.full_messages }, status: :unprocessable_entity
+    end 
+  end 
 end 

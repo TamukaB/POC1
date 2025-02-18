@@ -1,20 +1,21 @@
 <div class="container">
-  <div class="card shadow-lg rounded-lg">
+  <div class="card shadow-lg rounded-lg position-relative">
     <div class="card-body">
       <h2 class="text-center mb-4">Profile</h2>
+
+      <%= render "devise/shared/back_button" %> <!-- Back button here -->
 
       <p><strong>Handle:</strong> <%= current_user.handle %></p>
       <p><strong>Phone Number:</strong> <%= current_user.phone_number %></p>
 
-      <!-- Increased spacing before the buttons -->
-      <div class="mt-5"></div> <%# Added extra spacing before the buttons %>
+      <div class="mt-5"></div>
 
       <!-- Buttons Section -->
       <div class="d-grid gap-2 mt-4">
         <%= link_to "Edit Profile", edit_profile_path, class: "btn btn-primary btn-lg" %>
       </div>
 
-      <div class="d-grid gap-2 mt-5"> <%# Increased margin-top for more spacing %>
+      <div class="d-grid gap-2 mt-5">
         <%= button_to "Delete Account", confirm_delete_profile_path, method: :get, class: "btn btn-danger btn-lg" %>
       </div>
 
