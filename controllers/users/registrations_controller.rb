@@ -11,6 +11,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     # Set a dummy password, since we use phone-based auth.
     resource.password = SecureRandom.hex(10) if resource.password.blank?
 
+    Rails.logger.info "Device fingerprint received: #{sign_up_params[:device_fingerprint]}"
+
     resource.save
     yield resource if block_given?
     if resource.persisted?
