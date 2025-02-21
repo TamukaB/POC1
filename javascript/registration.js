@@ -1,50 +1,65 @@
-// Returns a canvas fingerprint as a Base64 data URL
-function getCanvasFingerprint() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 200;
-  canvas.height = 50;
-  const ctx = canvas.getContext('2d');
-
-  ctx.textBaseline = 'top';
-  ctx.font = "14px 'Arial'";
-
-  ctx.fillStyle = "#f60";
-  ctx.fillRect(125, 1, 62, 20);
-
-  // Draw text with varying colors for uniqueness
-  ctx.fillStyle = "#069";
-  ctx.fillText("Hello, world!", 2, 15);
-  ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
-  ctx.fillText("Hello, world!", 4, 17);
-
-  return canvas.toDataURL();
-}
-
 console.log("Registration.js loaded");
+
+function getAudioFingerprint(callback) {
+  try {
+    const AudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    if (!AudioContext) {
+      callback("NoAudioContext");
+      return;
+    }
+    const context = new AudioContext(1, 44100, 44100);
+    
+    const oscillator = context.createOscillator();
+    oscillator.type = "triangle";
+    oscillator.frequency.value = 10000;
+    
+    const compressor = context.createDynamicsCompressor();
+    compressor.threshold.value = -50;
+    compressor.knee.value = 40;
+    compressor.ratio.value = 12;
+    compressor.attack.value = 0;
+    compressor.release.value = 0.25;
+    
+    oscillator.connect(compressor);
+    compressor.connect(context.destination);
+    
+    oscillator.start(0);
+    context.startRendering().then(function(renderedBuffer) {
+      let fingerprint = "";
+      const channelData = renderedBuffer.getChannelData(0);
+      for (let i = 0; i < channelData.length; i++) {
+        fingerprint += channelData[i].toString();
+      }
+      callback(fingerprint);
+    }).catch(function(err) {
+      console.error("Audio rendering failed:", err);
+      callback("Error");
+    });
+  } catch (e) {
+    console.error("Audio fingerprinting failed", e);
+    callback("Error");
+  }
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   const registrationForm = document.getElementById("new_user");
   if (registrationForm) {
     registrationForm.addEventListener("submit", function (event) {
-      event.preventDefault(); // Prevent immediate submission
-
-      // Generate the canvas fingerprint
-      const canvasFingerprint = getCanvasFingerprint();
-      console.log("Canvas Fingerprint:", canvasFingerprint);
-
-      // Set the fingerprint into the hidden field
-      const fingerprintField = document.getElementById("device_fingerprint");
-      if (fingerprintField) {
-        fingerprintField.value = canvasFingerprint;
-        console.log("Hidden field set to:", fingerprintField.value);
-      } else {
-        console.error("Hidden field 'device_fingerprint' not found!");
-      }
-
-      // Optional: delay submission by 500ms to observe the console logs
-      setTimeout(() => {
+      event.preventDefault(); 
+      
+      getAudioFingerprint(function(audioFingerprint) {
+        console.log("Audio Fingerprint:", audioFingerprint);
+        
+        const fingerprintField = document.getElementById("audio_fingerprint");
+        if (fingerprintField) {
+          fingerprintField.value = audioFingerprint;
+          console.log("Audio fingerprint field set to:", fingerprintField.value);
+        } else {
+          console.error("Hidden field 'audio_fingerprint' not found!");
+        }
+        
         registrationForm.submit();
-      }, 500);
+      });
     });
   } else {
     console.error("Registration form with id 'new_user' not found!");

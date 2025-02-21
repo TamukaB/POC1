@@ -5,12 +5,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # Override the create action to generate an OTP and redirect to OTP verification
   def create
     build_resource(sign_up_params)
-    
+
     resource.phone_number = normalize_phone_number(sign_up_params[:phone_number])
     resource.handle = sign_up_params[:handle].to_s.strip
     # Set a dummy password, since we use phone-based auth.
     resource.password = SecureRandom.hex(10) if resource.password.blank?
 
+    Rails.logger.info "Audio fingerprint received: #{sign_up_params[:audio_fingerprint]}"
     Rails.logger.info "Device fingerprint received: #{sign_up_params[:device_fingerprint]}"
 
     resource.save
@@ -34,7 +35,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   protected
 
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:phone_number, :handle, :device_fingerprint])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:phone_number, :handle, :device_fingerprint, :audio_fingerprint])
   end
 
   def configure_account_update_params

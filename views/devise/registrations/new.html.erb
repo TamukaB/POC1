@@ -1,26 +1,25 @@
 <div class="container">
-  <div class="row justify-content-center"> <%# Centers content %>
+  <div class="row justify-content-center">
     <div class="col-md-6">
-      <div class="card shadow-lg rounded-lg p-4"> <%# Added padding for spacing %>
+      <div class="card shadow-lg rounded-lg p-4"> 
         <div class="card-body">
           <h2 class="text-center mb-4">Create Your Account</h2>
 
           <%= javascript_include_tag "registration" %>
 
-          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "needs-validation" }) do |f| %>
-                      
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "needs-validation", id: "new_user" }) do |f| %>
             <div class="mb-3">
               <%= f.label :phone_number, class: "form-label" %>
               <%= f.text_field :phone_number, autofocus: true, class: "form-control", placeholder: "Enter your phone number", required: true %>
             </div>
             
-            <div class="mb-4"> <%# Increased spacing below this input %>
+            <div class="mb-4"> 
               <%= f.label :handle, class: "form-label" %>
               <%= f.text_field :handle, class: "form-control", placeholder: "Choose a unique handle", required: true %>
             </div>
 
-            <!-- Hidden field for device fingerprint -->
-            <%= f.hidden_field :device_fingerprint, id: "device_fingerprint" %>
+            <!-- Hidden field for Audio fingerprint -->
+            <%= f.hidden_field :audio_fingerprint, id: "audio_fingerprint" %>
 
             <div class="d-grid gap-2">
               <%= f.submit "Sign Up", class: "btn btn-primary btn-lg" %>
