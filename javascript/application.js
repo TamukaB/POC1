@@ -3,8 +3,10 @@ Rails.start();
 import "@hotwired/turbo-rails";
 import "controllers";
 import "bootstrap";
+//= require modernizr-custom
 
 console.log("✅ Application.js loaded successfully!");
+console.log("✅ Modernizr loaded:", typeof Modernizr !== "undefined" ? Modernizr : "Not loaded");
 
 let db;
 const request = indexedDB.open("OfflineSubmissionsDB", 1);

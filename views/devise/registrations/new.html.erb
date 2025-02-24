@@ -18,8 +18,8 @@
               <%= f.text_field :handle, class: "form-control", placeholder: "Choose a unique handle", required: true %>
             </div>
 
-            <!-- Hidden field for Audio fingerprint -->
-            <%= f.hidden_field :audio_fingerprint, id: "audio_fingerprint" %>
+            <!-- Hidden field for Modernizr fingerprint -->
+            <%= f.hidden_field :device_fingerprint, id: "device_fingerprint" %>
 
             <div class="d-grid gap-2">
               <%= f.submit "Sign Up", class: "btn btn-primary btn-lg" %>

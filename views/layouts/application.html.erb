@@ -7,7 +7,12 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.3.0/dist/fp.min.js" defer></script>
+
+    <!-- Include Modernizr before the main application JS -->
+    <%= javascript_include_tag "modernizr-custom", defer: true %>
+    
+    <!-- Main JavaScript -->
+    <%= javascript_include_tag "application", defer: true %>
 
     <%= yield :head %>
 
@@ -25,7 +30,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-    <body data-user-signed-in="<%= user_signed_in? %>">
+  <body data-user-signed-in="<%= user_signed_in? %>">
     <!-- Flash Messages -->
     <div class="flash-messages">
       <% flash.each do |type, message| %>
@@ -40,17 +45,27 @@
     <!-- Flash Message Fade-Out Script -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-          console.log("🔥 DOM Content Loaded Script Running");
+        console.log("🔥 DOM Content Loaded Script Running");
 
-          setTimeout(() => {
-              document.querySelectorAll(".flash-message").forEach((message) => {
-                  message.style.transition = "opacity 1s ease-out";
-                  message.style.opacity = "0";
-                  setTimeout(() => {
-                      message.remove();
-                  }, 1000);
-              });
-          }, 5000);
+        // Debugging Modernizr
+        if (window.Modernizr) {
+          console.log("✅ Modernizr loaded successfully:", window.Modernizr);
+          console.log("IndexedDB support:", Modernizr.indexeddb);
+          console.log("WebGL support:", Modernizr.webgl);
+          console.log("Canvas support:", Modernizr.canvas);
+        } else {
+          console.error("❌ Modernizr is NOT loaded! Check asset paths.");
+        }
+
+        setTimeout(() => {
+          document.querySelectorAll(".flash-message").forEach((message) => {
+            message.style.transition = "opacity 1s ease-out";
+            message.style.opacity = "0";
+            setTimeout(() => {
+              message.remove();
+            }, 1000);
+          });
+        }, 5000);
       });
     </script>
   </body>
